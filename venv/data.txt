@@ -1,0 +1,13 @@
+ 3 + 4 {*} 10
+  + -20 *2
+  kstart_foo
+  +
+  end_foo
+  Cama
+  ?
+  TATA
+  (b(3c))
+  for
+  declare
+  DECLARE
+  so
