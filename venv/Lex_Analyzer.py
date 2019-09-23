@@ -1,36 +1,42 @@
+# calclex.py
+#
+# tokenizer for a simple expression evaluator
+# for numbers and +,-,*,/
+#
+
+import sys
 import ply.lex as lex
+from ply.lex import TOKEN
 
 class MyLexer(object):
     datafile = "data.txt"
 
     reserved = {
-        'if' : 'IF',
-        'for': 'FOR',
-        'then' : 'THEN',
+        'IF' : 'IF',
+        'FOR': 'FOR',
+        'THEN' : 'THEN',
         'ELSE' : 'ELSE',
-        'while' : 'WHILE',
+        'WHILE' : 'WHILE',
         'DECLARE': 'DECLARE',
         'IMPORT': 'IMPORT',
-        'Object': 'OBJECT',
-        'Move': 'MOVE',
-        'Vibration': 'VIBRATION',
-        'Inclination': 'INCLINATION',
-        'Temperature': 'TEMPERATURE',
-        'Brightness': 'BRIGHTNESS',
-        'Sound': 'SOUND',
-        'Dow': 'DOW',
-        'Enddo': 'ENDDO',
-        'FEnd': 'FEND',
+        'OBJECT': 'OBJECT',
+        'MOVE': 'MOVE',
+        'VIBRATION': 'VIBRATION',
+        'INCLINATION': 'INCLINATION',
+        'TEMPERATURE': 'TEMPERATURE',
+        'BRIGHTNESS': 'BRIGHTNESS',
+        'SOUND': 'SOUND',
+        'DOW': 'DOW',
+        'ENDDO': 'ENDDO',
+        'FEND': 'FEND',
         'CASE': 'CASE',
         'WHEN': 'WHEN',
         'END': 'END',
-        'Inc': 'INC',
-        'Dec': 'DEC',
-        'Call': 'CALL',
-        'Procedure': 'PROCEDURE',
-        'Begin': 'BEGIN',
-        'begin': 'begin',
-        'end': 'end',
+        'INC': 'INC',
+        'DEC': 'DEC',
+        'CALL': 'CALL',
+        'PROCEDURE': 'PROCEDURE',
+        'BEGIN': 'BEGIN',
     }
 #    'Times': 'TIMES',
 #    'THEN': 'THEN',
@@ -44,7 +50,15 @@ class MyLexer(object):
         'DIVIDE',
         'LPAREN',
         'RPAREN',
-        'ID',
+        'VARIABLE',
+        'IDENTIFIER',
+        'OPERATOR',
+        'EQUAL',
+        'ASIGN',
+        'COMMENT',
+        'WHITE_SPACE',
+        'SEMICOLON',
+        'KEYWORD',
     ] + list(reserved.values())
 
     literals = [ '{', '}']
@@ -53,30 +67,59 @@ class MyLexer(object):
     t_PLUS      = r'\+'
     t_MINUS     = r'-'
     t_TIMES     = r'\*'
-    t_DIVIDE    = r'/'
+    #t_DIVIDE    = r'/'
     t_LPAREN    = r'\('
     t_RPAREN    = r'\)'
-    t_digit     = r'([0-9])'
-    t_nondigit  = r'([_A-Za-z])'
+    t_EQUAL = r'\='
+    t_ASIGN = r'\=='
+    r_OR = r'\|'
 
-    identifier  = r'(' + t_nondigit + r'(' + t_digit + r'|' + t_nondigit + r')*)'
+    #identifier  = r'(' + t_nondigit + r'(' + t_digit + r'|' + t_nondigit + r')*)'
     # t_ignore_COMMENT = r'\#.*'
 
-    # Rule to match an identifier aof reserved words
-    @TOKEN(identifier)
     def t_ID(self, t):
-        r'[a-z][a-zA-Z_0-9]*'
-        t.type = self.reserved.get(t.value, 'ID')  # Check for reserved words
+        r"""[a-z][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!]|
+        [a-z][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!]|
+        [a-z][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!]|
+        [a-z][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!]|
+        [a-z][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!]|
+        [a-z][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!]|
+        [a-z][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!]|
+        [a-z][a-z|A-Z|0-9|_|&|!][a-z|A-Z|0-9|_|&|!]|
+        [a-z][a-z|A-Z|0-9|_|&|!]|
+        [a-z]"""
+
+        t.type = self.reserved.get(t.value, 'VARIABLE') #Check for reserved words
 
         # Look up symbol table information and return a tuple
         # t.value = (t.value, symbol_lookup(t.value))
 
         return t
 
+    def t_KEYWORD(self, t):
+        r"""IF|FOR|THEN|ELSE|WHILE|DECLARE|IMPORT|OBJECT|MOVE|VIBRATION
+        |INCLINATION|TEMPERATURE|BRIGHTNESS|SOUND|DOW|ENDDO|FEND|CASE|WHEN
+        |END|INC|DEC|CALL|PROCEDURE|BEGIN"""
+        t.type = self.reserved.get(t.value, 'KEYWORD')
+        return t
+
+    # Rule to match an identifier aof reserved words
     def t_COMMENT(self, t):
-        r'\#.*'
-        pass
+        r'\/\/[\/|a-z|A-Z|0-9|\!|\"|\#|\$|\%|\&|\(|\)|\=|\?|\¡|\¨|\*|\[|\]|\;|\:|\_|\,|\.|\-|\}|\{|\+|\´|\¿|\@|\·|\~|\<|\>]*'
+        #pass
+        t.type = self.reserved.get(t.value, 'COMMENT')
+        return t
         # No return value. Token discarded
+
+    def t_SEMICOLON(self, t):
+        r'\;'
+        t.type = self.reserved.get(t.value, 'SEMICOLON')
+        return t
+
+    def t_DIVIDE(self, t):
+        r'\/'
+        t.type = self.reserved.get(t.value, 'DIVIDE')
+        return t
 
     # A regular expression rules with some action code
     def t_NUMBER(self, t):
@@ -91,7 +134,11 @@ class MyLexer(object):
         t.lexer.lineno += t.value.count("\n")
 
     # A string containing ignored characters (spaces ad tabs)
-    t_ignore = ' \t'
+    #t_ignore = ' \t'
+    def t_WHITE_SPACE(self, t):
+        r'\ '
+        t.type = self.reserved.get(t.value, 'WHITE_SPACE')
+        return t
 
     def t_lbrace(self, t):
         r'\{'
@@ -127,9 +174,22 @@ class MyLexer(object):
 
     # Error handling rule
     def t_error(self, t):
-        raise ("Illegal character '%s' in line '%d' and column '%d'" % (
+        print("Illegal character '%s' in line '%d' and column '%d'" % (
         t.value[0], t.lexer.lineno, MyLexer.find_column(self, self.lexer.lexdata, t)))
-        #t.lexer.skip(1)
+        sys.exit()
+        n = 1
+        m = ""
+        # if t.value[0] != '':
+        #   print("space") quedé en comfigurar que salte la palabra completa para que la imprima y luego corte la vara
+
+        while t.value[n].isspace():
+            n += 1
+            m += t.value[n]
+
+        # if t.value[5].isspace():
+        #    print("hey")
+        t.lexer.skip(n)
+        print(m)
 
     # Build the lexer
     def build(self, **kwargs):
@@ -144,4 +204,7 @@ class MyLexer(object):
                 break
             print(tok)
         print("Count of number: %d" % self.lexer.num_count)
+
+    def get_tokens(self):
+        return self.tokens
 

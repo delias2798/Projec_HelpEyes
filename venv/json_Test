@@ -1,0 +1,35 @@
+{
+    "Virtual_Word":[{
+            "Action":"OBJECT",
+            "Magnitude":"5"
+        },
+        {
+            "Action":"OBJECT",
+            "Magnitude":"5"
+        },
+        {
+            "Action":"MOVE",
+            "Magnitude":"7"
+        },
+        {
+            "Action":"VIBRATION",
+            "Magnitude":"3"
+        },
+        {
+            "Action":"INCLINATION",
+            "Magnitude":"5"
+        },
+        {
+            "Action":"TEMPERATURE",
+            "Magnitude":"5"
+        },
+        {
+            "Action":"BRIGHTNESS",
+            "Magnitude":"5"
+        },
+        {
+            "Action":"SOUND",
+            "Magnitude":"5"
+        }
+    ]
+}
