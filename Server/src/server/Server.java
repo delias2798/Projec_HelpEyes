@@ -25,16 +25,14 @@ public class Server {
                 try{
                     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     String clientMessage = in.readLine();
-                    System.out.println("Client message: " + clientMessage);
                     JSONObject clientJSON = new JSONObject(clientMessage);
-                    System.out.println("Client JSON: " + clientJSON);
-                    System.out.println(clientJSON.get("temperature"));
+                    System.out.println("Client message: " + clientJSON);
 
-                    JSONObject serverJSON = alertManager.jsonBuilder();
+                    JSONObject serverJSON = alertManager.generateResponse(clientJSON);
                     String serverJSONString = serverJSON.toString();
 
                     BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-                    System.out.println("Sending Message...");
+                    System.out.println("Sending Response...");
                     out.write(serverJSONString);
                     out.flush();
                     System.out.println("Message sent");
