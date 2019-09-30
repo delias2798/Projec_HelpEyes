@@ -14,7 +14,7 @@ sock.connect((HOST, PORT))
 class text_editor:
     current_open_file = "no files"
     def open_file(self):
-        open_return = filedialog.askopenfile(initialdir = "/", title = "Select File to Open", filetypes=(("text files","*.txt"),("all files","*.*")))
+        open_return = filedialog.askopenfile(initialdir = "/home/elias/PycharmProjects/Compiler/venv", title = "Select File to Open", filetypes=(("text files","*.txt"),("all files","*.*")))
         if(open_return != None):
             self.text_area.delete(1.0, END)
             for line in open_return:
@@ -31,7 +31,6 @@ class text_editor:
         f.write(text2save)
         f.close()
 
-
     def save_file(self):
         if self.current_open_file == "no file":
             self.save_as_file()
@@ -43,10 +42,6 @@ class text_editor:
     def new_file(self):
         self.text_area.delete(1.0,END)
         self.current_open_file = "no_file"
-
-
-
-
 
     def __init__(self, master):
         self.master = master
@@ -69,62 +64,12 @@ class text_editor:
 root = Tk()
 te = text_editor(root)
 
-new_root = Tk()
-new_root.title("Server")
-new_root.minsize(height=380, width=300)
-entry1 = Entry(new_root)
-entry1.place(x=130, y=10)
-entry2 = Entry(new_root)
-entry2.place(x=130, y=50)
-entry3 = Entry(new_root)
-entry3.place(x=130, y=90)
-entry4 = Entry(new_root)
-entry4.place(x=130, y=130)
-entry5 = Entry(new_root)
-entry5.place(x=130, y=170)
-entry6 = Entry(new_root)
-entry6.place(x=130, y=210)
-entry7 = Entry(new_root)
-entry7.place(x=130, y=250)
-entry8 = Entry(new_root)
-entry8.place(x=130, y=290)
-label1 = Label(new_root, text="Distance")
-label1.place(x=40, y=10)
-label2 = Label(new_root, text="Temperature")
-label2.place(x=40, y=50)
-label3 = Label(new_root, text="Humidity")
-label3.place(x=40, y=90)
-label4 = Label(new_root, text="Sound")
-label4.place(x=40, y=130)
-label5 = Label(new_root, text="Brightness")
-label5.place(x=40, y=170)
-label6 = Label(new_root, text="Inclination")
-label6.place(x=40, y=210)
-label7 = Label(new_root, text="Vibration")
-label7.place(x=40, y=250)
-label8 = Label(new_root, text="Speed")
-label8.place(x=40, y=290)
-
 #onlyfiles = [f for f in listdir("/home/kevinfgn/PycharmProjects/GUI/venv/Archives")]
 
 def sendJson():
-    datajson = {
-        "clientType" : "Compilador",
-        "distance": entry1.get(),
-        "temperature": entry2.get(),
-        "humidity": entry3.get(),
-        "sound": entry4.get(),
-        "brightness": entry5.get(),
-        "inclination": entry6.get(),
-        "vibration": entry7.get(),
-        "speed": entry8.get(),
-    }
-
     f = open("json_Test.json")
     data = f.read()
     f.close()
-    #data = json.dumps(datajson)
-    #print(datajson)
     sock.sendall(data.encode())
     sock.close()
 
@@ -135,8 +80,8 @@ def compilar():
     compiler.start_parser()
     return
 
-requestEntry = Entry(new_root)
-requestEntry.place(x = 5, y =320)
+#requestEntry = Entry(new_root)
+#requestEntry.place(x = 5, y =320)
 
 #def requestAux(a,b):
 #    if a == 0:
@@ -154,12 +99,12 @@ requestEntry.place(x = 5, y =320)
 
 
 compileButton = Button(root,text="Run",command = compilar)
-compileButton.place(x=1220,y=0)
+compileButton.place(x=1250,y=0)
 
-serverSend = Button(new_root, text="Send", command = sendJson)
-serverSend.place(x=230, y=320)
+serverSend = Button(root, text="Send", command = sendJson)
+serverSend.place(x=1250, y=30)
 
-#requestButton = Button(new_root, text= "Request", command = request)
+#requestButton = Button(root, text= "Request", command = request)
 #requestButton.place(x=6, y=345)
 
 root.mainloop()

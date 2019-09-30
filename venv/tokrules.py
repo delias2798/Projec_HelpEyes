@@ -32,4 +32,8 @@ class Compiler():
     #   config = json.load(f)
     #  print(config["1"])
 
+comp = Compiler()
+comp.execute_file("data.txt")
+comp.start_lexer()
+comp.start_parser()
 

@@ -18,6 +18,7 @@ class MyParser(object):
         self.lexer = lex
         self.tokens = self.lexer.tokens
         self.global_variables = []
+        self.local_variables = []
         self.actions = {}
         self.stack = []
         self.num_action = 0
@@ -127,6 +128,10 @@ class MyParser(object):
                         | WHITE_SPACE
                         | COMMENT
         """
+        if(len(p) > 7):
+            if(not self.find_var(p[3])):
+                self.local_variables
+
         print("define Number")
 
     def p_defineV(self, p):
@@ -134,6 +139,15 @@ class MyParser(object):
 
         """
         print("define variable")
+
+    def find_var(self, new_var):
+        if (len(self.local_variables) != 0):
+            for n in self.local_variables:
+                if n == new_var:
+                    return True
+
+        else:
+            return False
 
     #def p_variable(self, p):
     #    """VARIABLE"""
@@ -215,7 +229,7 @@ class MyParser(object):
         while (len(self.stack) > 0):
             new_input = self.stack.pop()
             self.actions[str(counter)] = new_input
-            print(self.actions)
+            #print(self.actions)
             #print(status_sensors)
             counter += 1
 
