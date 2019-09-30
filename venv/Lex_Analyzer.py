@@ -9,70 +9,73 @@ import ply.lex as lex
 from ply.lex import TOKEN
 
 class MyLexer(object):
-    datafile = "data.txt"
+    def __init__(self):
 
-    reserved = {
-        'IF' : 'IF',
-        'FOR': 'FOR',
-        'THEN' : 'THEN',
-        'ELSE' : 'ELSE',
-        'WHILE' : 'WHILE',
-        'DECLARE': 'DECLARE',
-        'IMPORT': 'IMPORT',
-        'OBJECT': 'OBJECT',
-        'MOVE': 'MOVE',
-        'VIBRATION': 'VIBRATION',
-        'INCLINATION': 'INCLINATION',
-        'TEMPERATURE': 'TEMPERATURE',
-        'BRIGHTNESS': 'BRIGHTNESS',
-        'SOUND': 'SOUND',
-        'DOW': 'DOW',
-        'ENDDO': 'ENDDO',
-        'FEND': 'FEND',
-        'CASE': 'CASE',
-        'WHEN': 'WHEN',
-        'END': 'END',
-        'INC': 'INC',
-        'DEC': 'DEC',
-        'CALL': 'CALL',
-        'PROCEDURE': 'PROCEDURE',
-        'BEGIN': 'BEGIN',
-    }
-#    'Times': 'TIMES',
-#    'THEN': 'THEN',
+        self.datafile = "data.txt"
 
-    # List of token name
-    tokens = [
-        'NUMBER',
-        'PLUS',
-        'MINUS',
-        'TIMES',
-        'DIVIDE',
-        'LPAREN',
-        'RPAREN',
-        'VARIABLE',
-        'IDENTIFIER',
-        'OPERATOR',
-        'EQUAL',
-        'ASIGN',
-        'COMMENT',
-        'WHITE_SPACE',
-        'SEMICOLON',
-        'KEYWORD',
-    ] + list(reserved.values())
+        self.reserved = {
+            'IF' : 'IF',
+            'FOR': 'FOR',
+            'THEN' : 'THEN',
+            'ELSE' : 'ELSE',
+            'WHILE' : 'WHILE',
+            'DECLARE': 'DECLARE',
+            'IMPORT': 'IMPORT',
+            'OBJECT': 'OBJECT',
+            'MOVE': 'MOVE',
+            'VIBRATION': 'VIBRATION',
+            'INCLINATION': 'INCLINATION',
+            'TEMPERATURE': 'TEMPERATURE',
+            'BRIGHTNESS': 'BRIGHTNESS',
+            'SOUND': 'SOUND',
+            'DOW': 'DOW',
+            'ENDDO': 'ENDDO',
+            'FEND': 'FEND',
+            'CASE': 'CASE',
+            'WHEN': 'WHEN',
+            'END': 'END',
+            'INC': 'INC',
+            'DEC': 'DEC',
+            'CALL': 'CALL',
+            'PROCEDURE': 'PROCEDURE',
+            'BEGIN': 'BEGIN',
+            'MAIN': 'MAIN'
+        }
+    #    'Times': 'TIMES',
+    #    'THEN': 'THEN',
 
-    literals = [ '{', '}']
+        # List of token name
+        self.tokens = [
+            'NUMBER',
+            'PLUS',
+            'MINUS',
+            'TIMES',
+            'DIVIDE',
+            'LPAREN',
+            'RPAREN',
+            'VARIABLE',
+            'IDENTIFIER',
+            'OPERATOR',
+            'EQUAL',
+            'ASIGN',
+            'COMMENT',
+            'WHITE_SPACE',
+            'SEMICOLON',
+            'KEYWORD',
+        ] + list(self.reserved.values())
 
-    # Regular expresion rules for simple tokens
-    t_PLUS      = r'\+'
-    t_MINUS     = r'-'
-    t_TIMES     = r'\*'
-    #t_DIVIDE    = r'/'
-    t_LPAREN    = r'\('
-    t_RPAREN    = r'\)'
-    t_EQUAL = r'\='
-    t_ASIGN = r'\=='
-    r_OR = r'\|'
+        self.literals = [ '{', '}']
+
+        # Regular expresion rules for simple tokens
+        self.t_PLUS      = r'\+'
+        self.t_MINUS     = r'-'
+        self.t_TIMES     = r'\*'
+        #t_DIVIDE    = r'/'
+        self.t_LPAREN    = r'\('
+        self.t_RPAREN    = r'\)'
+        self.t_EQUAL = r'\='
+        self.t_ASIGN = r'\=='
+        self.r_OR = r'\|'
 
     #identifier  = r'(' + t_nondigit + r'(' + t_digit + r'|' + t_nondigit + r')*)'
     # t_ignore_COMMENT = r'\#.*'
@@ -99,13 +102,13 @@ class MyLexer(object):
     def t_KEYWORD(self, t):
         r"""IF|FOR|THEN|ELSE|WHILE|DECLARE|IMPORT|OBJECT|MOVE|VIBRATION
         |INCLINATION|TEMPERATURE|BRIGHTNESS|SOUND|DOW|ENDDO|FEND|CASE|WHEN
-        |END|INC|DEC|CALL|PROCEDURE|BEGIN"""
+        |END|INC|DEC|CALL|PROCEDURE|BEGIN|MAIN"""
         t.type = self.reserved.get(t.value, 'KEYWORD')
         return t
 
     # Rule to match an identifier aof reserved words
     def t_COMMENT(self, t):
-        r'\/\/[\/|a-z|A-Z|0-9|\!|\"|\#|\$|\%|\&|\(|\)|\=|\?|\¡|\¨|\*|\[|\]|\;|\:|\_|\,|\.|\-|\}|\{|\+|\´|\¿|\@|\·|\~|\<|\>]*'
+        r'\/\/[\/|a-z|A-Z|0-9|\!|\"|\#|\$|\%|\&|\(|\)|\=|\?|\¡|\¨|\*|\[|\]|\;|\:|\_|\,|\.|\-|\}|\{|\+|\´|\¿|\@|\·|\~|\<|\>\ t]*'
         #pass
         t.type = self.reserved.get(t.value, 'COMMENT')
         return t
@@ -129,14 +132,14 @@ class MyLexer(object):
         return t
 
     # Define a rule so we can track line numbers
-    def t_newline(self, t):
-        r'\n+'
-        t.lexer.lineno += t.value.count("\n")
+    #def t_newline(self, t):
+    #    r'\n+'
+    #    t.lexer.lineno += t.value.count("\n")
 
     # A string containing ignored characters (spaces ad tabs)
     #t_ignore = ' \t'
     def t_WHITE_SPACE(self, t):
-        r'\ '
+        r'[\ ]+ | [\n]+'
         t.type = self.reserved.get(t.value, 'WHITE_SPACE')
         return t
 
