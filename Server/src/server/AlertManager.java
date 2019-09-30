@@ -18,6 +18,11 @@ public class AlertManager {
             int keyCounter = 1;
             JSONObject response = new JSONObject();
 
+            response.put("distance", 100);
+            response.put("temperature", 3);
+            response.put("brightness", 3);
+            response.put("inclination", 3);
+            response.put("sound", 3);
 
 
             return response;

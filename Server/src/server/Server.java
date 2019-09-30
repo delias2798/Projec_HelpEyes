@@ -25,6 +25,7 @@ public class Server {
                 try{
                     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     String clientMessage = in.readLine();
+                    System.out.println(clientMessage);
                     JSONObject clientJSON = new JSONObject(clientMessage);
                     System.out.println("Client message: " + clientJSON);
 
