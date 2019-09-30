@@ -4,11 +4,12 @@ import socket
 import json
 from os import listdir
 from os.path import isfile, join
+import tokrules
 
 HOST = "172.20.10.4"
-PORT = 9595
-#sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-#sock.connect((HOST, PORT))
+PORT = 8787
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock.connect((HOST, PORT))
 
 class text_editor:
     current_open_file = "no files"
@@ -119,12 +120,19 @@ def sendJson():
         "speed": entry8.get(),
     }
 
-    data = json.dumps(datajson)
-    print(datajson)
-    #sock.sendall(data.encode())
-    #sock.close()
+    f = open("json_Test.json")
+    data = f.read()
+    f.close()
+    #data = json.dumps(datajson)
+    #print(datajson)
+    sock.sendall(data.encode())
+    sock.close()
 
 def compilar():
+    compiler = tokrules.Compiler()
+    compiler.execute_file(te.current_open_file)
+    compiler.start_lexer()
+    compiler.start_parser()
     return
 
 requestEntry = Entry(new_root)
@@ -146,13 +154,13 @@ requestEntry.place(x = 5, y =320)
 
 
 compileButton = Button(root,text="Run",command = compilar)
-compileButton.place(x=1320,y=0)
+compileButton.place(x=1220,y=0)
 
 serverSend = Button(new_root, text="Send", command = sendJson)
 serverSend.place(x=230, y=320)
 
-requestButton = Button(new_root, text= "Request", command = request)
-requestButton.place(x=6, y=345)
+#requestButton = Button(new_root, text= "Request", command = request)
+#requestButton.place(x=6, y=345)
 
 root.mainloop()
 
