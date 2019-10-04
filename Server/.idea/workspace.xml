@@ -19,11 +19,12 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Client" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ProyectGit/Projec_HelpEyes/Server" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -75,6 +76,7 @@
       <workItem from="1569610930676" duration="6607000" />
       <workItem from="1569773841737" duration="996000" />
       <workItem from="1569778962521" duration="74000" />
+      <workItem from="1569809335723" duration="27012000" />
     </task>
     <servers />
   </component>
